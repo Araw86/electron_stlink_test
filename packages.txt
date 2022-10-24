@@ -1,0 +1,1 @@
+ yarn add electron concurrecntly wait-on cross-env
