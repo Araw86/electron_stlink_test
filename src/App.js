@@ -1,13 +1,27 @@
 
 import { Box } from '@mui/material';
+import React, { Component } from "react";
 
-function App() {
-  console.log(window.versions.node());
-  return (
-    <Box>
-      test
-    </Box>
-  );
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { version: null };
+  }
+
+  async componentDidMount() {
+    const version = await window.ipc_handlers.ipc_twoWay({ type: 0 });
+    this.setState({ version: version });
+  }
+  render() {
+
+    return (
+      <Box>
+        test
+        <br />
+        {this.state.version}
+      </Box>
+    );
+  }
 }
 
 export default App;

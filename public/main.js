@@ -1,6 +1,6 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
-
+const ipc = require('./ipc_handlers.js')
 
 function createWindow() {
     // Create the browser window.
@@ -17,7 +17,10 @@ function createWindow() {
 }
 
 
-app.on('ready', createWindow);
+app.on('ready', () => {
+    ipc.ipc_handlers();
+    createWindow();
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
