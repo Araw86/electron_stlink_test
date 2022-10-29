@@ -4,6 +4,7 @@ import './App.css';
 
 
 function App() {
+  console.log(window.versions.node());
   return (
     <div className="App">
       <header className="App-header">
