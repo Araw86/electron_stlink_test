@@ -1,6 +1,6 @@
 {
   "name": "electron_stlink_test",
-  "version": "0.2.2",
+  "version": "0.2.6",
   "description": "Testing example for update and stlink access to stm32",
   "author": "Radek Ripa",
   "private": true,
@@ -54,9 +54,15 @@
       "buildResources": "assets"
     },
     "win": {
-      "publish": [
-        "github"
-      ]
+      "publish": {
+        "provider": "github",
+        "owner": "Araw86",
+        "repo": "electron_stlink_test"
+      }
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "Araw86"
     }
   },
   "eslintConfig": {

@@ -16,7 +16,7 @@ class App extends Component {
 
     return (
       <Box>
-        test
+        test2
         <br />
         {this.state.version}
       </Box>

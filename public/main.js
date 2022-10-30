@@ -21,10 +21,15 @@ function createWindow() {
             ? 'http://localhost:3000'
             : `file://${path.join(__dirname, '../build/index.html')}`
     )
-
+    // Open the DevTools.
+    if (isDev) {
+        win.webContents.openDevTools({ mode: "detach" });
+        require('react-devtools-electron');
+    };
     if (!isDev) {
         autoUpdater.checkForUpdates();
     }
+
 }
 
 
@@ -35,6 +40,9 @@ app.on('ready', () => {
 
 
 autoUpdater.on("update-available", (_event, releaseNotes, releaseName) => {
+    console.log(_event);
+    console.log(releaseNotes);
+    console.log(releaseName);
     const dialogOpts = {
         type: 'info',
         buttons: ['Ok'],
@@ -59,6 +67,24 @@ autoUpdater.on("update-downloaded", (_event, releaseNotes, releaseName) => {
         if (returnValue.response === 0) autoUpdater.quitAndInstall()
     })
 });
+
+
+autoUpdater.on("update-not-available", (_event, releaseNotes, releaseName) => {
+    console.log(_event);
+    console.log(releaseNotes);
+    console.log(releaseName);
+    const dialogOpts = {
+        type: 'info',
+        buttons: ['Ok'],
+        title: 'Application No Update',
+        message: process.platform === 'win32' ? releaseNotes : releaseName,
+        detail: 'No version found.'
+    }
+    dialog.showMessageBox(dialogOpts, (response) => {
+
+    });
+}
+);
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
