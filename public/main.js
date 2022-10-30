@@ -86,6 +86,20 @@ autoUpdater.on("update-not-available", (_event, releaseNotes, releaseName) => {
 }
 );
 
+autoUpdater.on("error", (_event) => {
+    console.log(_event);
+    const dialogOpts = {
+        type: 'info',
+        buttons: ['Ok'],
+        title: 'Error',
+        message: '',
+        detail: 'No version found.' + _event
+    }
+    dialog.showMessageBox(dialogOpts, (response) => {
+    });
+}
+);
+
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
     // On OS X it is common for applications and their menu bar
