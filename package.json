@@ -1,9 +1,13 @@
 {
   "name": "electron_stlink_test",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "description": "Testing example for update and stlink access to stm32",
   "author": "Radek Ripa",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Araw86/electron_stlink_test"
+  },
   "dependencies": {
     "@electron/remote": "^2.0.8",
     "@emotion/react": "^11.10.5",
@@ -39,6 +43,7 @@
   "build": {
     "extends": null,
     "appId": "com.example.electron-stlink-test",
+    "productName": "electron stlink test",
     "files": [
       "dist/**/*",
       "build/**/*",
