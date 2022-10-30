@@ -1,6 +1,9 @@
-const { app, BrowserWindow } = require('electron');
+const { app, dialog, BrowserWindow } = require('electron');
 const path = require('path');
+const isDev = require('electron-is-dev')
 const ipc = require('./ipc_handlers.js')
+
+const { autoUpdater } = require("electron-updater")
 
 function createWindow() {
     // Create the browser window.
@@ -13,13 +16,48 @@ function createWindow() {
             preload: path.join(__dirname, 'preload/preload.js'),
         }
     });
-    win.loadURL('http://localhost:3000');
+    win.loadURL(
+        isDev
+            ? 'http://localhost:3000'
+            : `file://${path.join(__dirname, '../build/index.html')}`
+    )
+
+    if (!isDev) {
+        autoUpdater.checkForUpdates();
+    }
 }
 
 
 app.on('ready', () => {
     ipc.ipc_handlers();
     createWindow();
+});
+
+
+autoUpdater.on("update-available", (_event, releaseNotes, releaseName) => {
+    const dialogOpts = {
+        type: 'info',
+        buttons: ['Ok'],
+        title: 'Application Update',
+        message: process.platform === 'win32' ? releaseNotes : releaseName,
+        detail: 'A new version is being downloaded.'
+    }
+    dialog.showMessageBox(dialogOpts, (response) => {
+
+    });
+})
+
+autoUpdater.on("update-downloaded", (_event, releaseNotes, releaseName) => {
+    const dialogOpts = {
+        type: 'info',
+        buttons: ['Restart', 'Later'],
+        title: 'Application Update',
+        message: process.platform === 'win32' ? releaseNotes : releaseName,
+        detail: 'A new version has been downloaded. Restart the application to apply the updates.'
+    };
+    dialog.showMessageBox(dialogOpts).then((returnValue) => {
+        if (returnValue.response === 0) autoUpdater.quitAndInstall()
+    })
 });
 
 // Quit when all windows are closed.
